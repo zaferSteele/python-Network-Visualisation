@@ -1,0 +1,1 @@
+{'Time': '2025-06-20T09:54:06.345218', 'hostname': 'R6.r6.lcoal', 'Gig0-0_In_Octet': '374214', 'Gig0-0_In_uPackets': '1142', 'Gig0-0_Out_Octet': '223809', 'Gig0-0_Out_uPackets': '1985'}
