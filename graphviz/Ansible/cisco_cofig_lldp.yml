@@ -1,0 +1,22 @@
+---
+# This playbook enables the LLDP (Link Layer Discovery Protocol) service on network devices
+
+- name: Enable LLDP  # Descriptive name for the playbook
+  hosts: "devices"    # Target group of devices from the Ansible inventory
+  gather_facts: false # Disable automatic facts gathering (not needed for this playbook)
+  connection: network_cli  # Use CLI-based connection method for network devices
+
+  tasks:
+    # Task to enable LLDP on the devices using the ios_lldp module
+  - name: enable LLDP service
+    ios_lldp:
+      state: present  # Ensure that LLDP is enabled ("present" means active)
+    register: output  # Save the result of this task in a variable called 'output'
+
+    # Task to display the result of the previous task
+  - name: show output
+    debug:
+      var: output  # Print the value of the 'output' variable
+
+# Note: The ios_lldp module is available in Ansible version 2.5 and above.
+#       If you're using an older version, use the 'ios_config' module instead.

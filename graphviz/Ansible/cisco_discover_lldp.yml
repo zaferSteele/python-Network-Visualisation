@@ -1,0 +1,25 @@
+---
+# This playbook retrieves LLDP neighbor information from network devices and saves the output
+
+- name: Query LLDP Neighbors  # Descriptive name for the playbook
+  hosts: "devices"            # Target group of devices from the Ansible inventory
+  gather_facts: false         # Skip automatic facts gathering (not required here)
+  connection: network_cli      # Use network CLI connection for accessing devices
+
+  tasks:
+    # Task to run the 'show lldp neighbors' command on the devices
+  - name: Query for LLDP Neighbors
+    ios_command:
+      commands: show lldp neighbors  # Cisco IOS command to query LLDP neighbors
+    register: output  # Save the command result in the 'output' variable
+
+    # Task to display the command output in the terminal/log
+  - name: show output
+    debug:
+      var: output
+
+    # Task to write the LLDP command output to a local file for each device
+  - name: copy output to a file
+    copy:
+      content: "{{ output.stdout_lines }}"  # Use the formatted output
+      dest: "./tmp/{{ inventory_hostname }}_lldp_output.txt"  # Save per-device output in the tmp/ folder

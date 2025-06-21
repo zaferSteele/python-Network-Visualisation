@@ -1,0 +1,11 @@
+---
+# This YAML file represents a single device entry for the Ansible inventory
+
+ansible_host: 192.168.2.218        # IP address of the network device
+ansible_user: cisco                # Username for device login
+ansible_ssh_pass: cisco            # Password for SSH authentication
+ansible_connection: network_cli    # Use CLI over SSH for device connection
+ansible_network_os: ios            # Specify Cisco IOS as the device operating system
+ansbile_become: yes                # Attempt privilege escalation
+ansible_become_method: enable      # Use 'enable' mode for privilege escalation
+ansible_become_pass: cisco         # Password for entering enable mode
