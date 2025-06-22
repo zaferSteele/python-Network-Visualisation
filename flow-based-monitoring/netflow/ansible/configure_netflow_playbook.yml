@@ -1,0 +1,57 @@
+---
+# This playbook configures NetFlow on two groups of network devices: 'devices' and 'edge-devices'
+
+# === PLAY 1: Main network devices ===
+- name: Configure NetFlow
+  hosts: "devices"              # Target group of devices (defined in inventory)
+  gather_facts: false           # Skip gathering system facts to speed up execution
+  connection: network_cli       # Use CLI over SSH for network device config
+
+  tasks:
+    - name: configure netflow export
+      ios_config:
+        lines:
+          - ip flow-export destination 172.16.1.123 5556 vrf Mgmt-intf  # Where to send NetFlow data
+          - ip flow-export version 5                                    # Specify NetFlow version
+
+    - name: configure flow export on Gi0/0
+      ios_config:
+        lines:
+          - ip flow ingress     # Enable NetFlow on incoming traffic
+          - ip flow egress      # Enable NetFlow on outgoing traffic
+        parents: interface GigabitEthernet0/0  # Apply config under specific interface
+
+    - name: configure flow export on Gi0/1
+      ios_config:
+        lines:
+          - ip flow ingress
+          - ip flow egress
+        parents: interface GigabitEthernet0/1
+
+    - name: configure flow export on Gi0/2
+      ios_config:
+        lines:
+          - ip flow ingress
+          - ip flow egress
+        parents: interface GigabitEthernet0/2
+
+# === PLAY 2: Edge network devices ===
+- name: Configure NetFlow on edge-devices
+  hosts: "edge-devices"         # Target second group of devices
+  gather_facts: false
+  connection: network_cli
+
+  tasks:
+    - name: configure flow export on Gi0/3
+      ios_config:
+        lines:
+          - ip flow ingress
+          - ip flow egress
+        parents: interface GigabitEthernet0/3
+
+    - name: configure flow export on Gi0/4
+      ios_config:
+        lines:
+          - ip flow ingress
+          - ip flow egress
+        parents: interface GigabitEthernet0/4
