@@ -1,0 +1,6 @@
+graphviz
+pygraphviz
+matplotlib
+pygal
+pysnmp
+ansible
